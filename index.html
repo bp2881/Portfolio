@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pranav Bairy</title>
+<meta name="description" content="Computer science student in Hyderabad. Satellite data pipelines at ISRO NRSC, machine learning, and network systems.">
+<meta name="theme-color" content="#0a0e15">
+<meta property="og:title" content="Pranav Bairy">
+<meta property="og:description" content="I build robust systems which check their own work.">
+<meta property="og:type" content="website">
+<link rel="icon" id="favicon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%23ff9933'/%3E%3C/svg%3E">
+<link rel="preload" href="assets/fonts/schibsted-grotesk-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/styles.css">
+<script>
+  document.documentElement.classList.add('js');
+  if (/[?&]slots\b/.test(location.search)) document.documentElement.classList.add('show-slots');
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="ar" viewBox="0 0 12 12"><path class="arrow" d="M2 10 L10 2 M4 2 H10 V8"/></symbol>
+</svg>
+
+<header class="top" id="top-bar">
+  <div class="wrap top-in">
+    <a class="brand" href="#top">
+      <span class="mark" aria-hidden="true">PB<img src="assets/logos/brand.jpeg" alt="" data-optional></span>
+      <span>Pranav Bairy</span>
+    </a>
+    <p class="status" id="status"><span id="clock">Hyderabad</span><span id="lastpush"></span></p>
+    <nav class="nav" aria-label="Sections">
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#contests">Contests</a>
+      <a href="#activity">Activity</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ================= hero ================= -->
+<section class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <h1 class="h1" aria-label="I build robust systems which check their own work.">
+        <span class="ln" aria-hidden="true"><span style="--i:0">I build robust</span></span>
+        <span class="ln" aria-hidden="true"><span style="--i:1">systems which check</span></span>
+        <span class="ln" aria-hidden="true"><span style="--i:2">their own work.</span></span>
+      </h1>
+      <p class="lede">Computer science student in Hyderabad. This summer at ISRO NRSC I built a satellite image alignment pipeline that verifies its own output with a second, independent method.</p>
+      <p class="hero-links">
+        <a class="lnk ext" href="https://github.com/bp2881">GitHub</a>
+        <a class="lnk ext" href="https://linkedin.com/in/pranavbairy">LinkedIn</a>
+        <a class="lnk" href="mailto:pranavbairy2@gmail.com">pranavbairy2@gmail.com</a>
+      </p>
+    </div>
+    <!-- Portrait: drop a black and white PNG with a transparent background at assets/img/portrait.png (about 800 x 1000). It sits on the bottom edge of this frame. -->
+    <figure class="portrait"><img src="assets/img/portrait.png" alt="Pranav Bairy" data-slot="assets/img/portrait.png" data-keep></figure>
+  </div>
+</section>
+
+<!-- ================= experience ================= -->
+<section class="sec" id="experience">
+  <div class="wrap sec-grid">
+    <div class="sec-head"><h2>Experience</h2><p>Summer 2026.</p></div>
+    <div class="exp">
+
+      <div class="org">
+        <div class="logo-slot"><span>ISRO NRSC</span><img src="assets/logos/isro.png" alt="ISRO and NRSC logo" data-optional></div>
+        <div>
+          <h4><a class="lnk ext" data-link="isroPost" data-fallback="https://linkedin.com/in/pranavbairy" href="https://linkedin.com/in/pranavbairy">Student intern, National Remote Sensing Centre, ISRO</a></h4>
+          <p>Shadnagar, Telangana. 1 June to 31 August 2026. Calibration and validation team, Data Processing Area. Guide: Mr. Raghavender N.</p>
+        </div>
+      </div>
+
+      <h3>One pipeline for four satellites, and two ways to prove it worked</h3>
+      <div class="prose">
+        <p>Two satellites can photograph the same field and disagree. Before you can compare them, the images have to share a grid, a physical unit and the same position on the ground. Doing that by hand for each pair is slow and easy to get wrong.</p>
+        <p>Radiometric Align does it from two input rasters. It works out which sensors it was given, converts to top-of-atmosphere reflectance with each mission's own calibration, registers the pair with ECC, and writes calibrated, aligned outputs with diagnostics. A PyQt5 desktop app and a command-line tool run the same core package and produce identical results.</p>
+        <p>The part I care about most is that it does not trust itself. Dense optical flow, which shares no mathematics with ECC, measures what shift remains. Resampling is benchmarked against a manual block average. Registration is run a second time on the corrected pair. All of it runs on background threads beside the main pipeline.</p>
+      </div>
+
+      <div class="pipe-wrap" id="pipe-wrap">
+        <h5>How a run flows</h5>
+        <ol class="pipe" id="pipe-main">
+          <li><button type="button" style="--i:0" data-d="<b>Detect the sensor.</b> Identified from file type and metadata: JP2 with SAFE XML for Sentinel-2, GeoTIFF with an MTL file for Landsat, GeoTIFF with BAND_META.txt for Resourcesat-2A."><span class="n">1</span><span class="s">Detect sensor</span></button></li>
+          <li><button type="button" style="--i:1" data-d="<b>Convert to reflectance.</b> Digital numbers become top-of-atmosphere reflectance using each mission's own calibration metadata, so the two images share a physical unit."><span class="n">2</span><span class="s">Reflectance</span></button></li>
+          <li><button type="button" style="--i:2" data-d="<b>Build a common grid.</b> Both rasters are reprojected onto the overlap of their footprints, padded by 32 pixels. Scenes that do not overlap stop the run here, before any expensive work."><span class="n">3</span><span class="s">Common grid</span></button></li>
+          <li><button type="button" style="--i:3" data-d="<b>Register with ECC.</b> Enhanced Correlation Coefficient estimates the remaining shift and rotation and corrects it. After one pass the residual is under half a pixel on every test dataset."><span class="n">4</span><span class="s">Register</span></button></li>
+          <li><button type="button" style="--i:4" data-d="<b>Find homogeneous ground.</b> A moving-window coefficient of variation marks flat regions, so radiometry is compared where registration error matters least."><span class="n">5</span><span class="s">Homogeneity</span></button></li>
+          <li><button type="button" style="--i:5" data-d="<b>Write auditable outputs.</b> Aligned rasters, homogeneity maps, RGB composites, plots and a timestamped log, so any run can be reproduced and inspected."><span class="n">6</span><span class="s">Outputs</span></button></li>
+        </ol>
+        <p class="lane-label">Checks on background threads</p>
+        <ol class="pipe checks" id="pipe-checks">
+          <li><button type="button" style="--i:6" data-d="<b>Resampling benchmark.</b> Output is compared with a manual area-weighted block average using RMSE, MAE, PSNR and SSIM, while ECC and cropping continue on the main thread."><span class="s">Block-average QA</span></button></li>
+          <li><button type="button" style="--i:7" data-d="<b>Second registration pass.</b> ECC is run again on the corrected pair to confirm there is nothing left to fix."><span class="s">ECC re-verification</span></button></li>
+          <li><button type="button" style="--i:8" data-d="<b>Independent shift measurement.</b> Dense Farneback optical flow, built on polynomial expansion rather than gradient ascent, measures displacement before and after. A real correction makes it collapse toward zero."><span class="s">Optical flow</span></button></li>
+        </ol>
+        <p class="pipe-detail" id="pipe-detail" aria-live="polite"></p>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><b>4</b><span>sensor families in one pipeline</span><small>Resourcesat-2/2A, Cartosat-3, Landsat-8/9, Sentinel-2</small></div>
+        <div class="stat"><b>&lt; 0.5 px</b><span>residual misalignment</span><small>after one ECC pass, on every test dataset</small></div>
+        <div class="stat"><b>0.0030</b><span>RMSE, Landsat-8 vs Sentinel-2C</span><small>reflectance, R&sup2; 0.9997 over 4.4 million pixels</small></div>
+        <div class="stat"><b>17 of 17</b><span>tests passing</span><small>functional, GUI and robustness</small></div>
+      </div>
+
+      <div class="figs">
+        <figure class="fig"><button type="button" class="plate" data-zoom aria-label="Enlarge: desktop app"><img src="assets/img/isro-gui.jpg" alt="Radiometric Align desktop application" data-slot="assets/img/isro-gui.jpg"></button><figcaption>The desktop app: pick two rasters, run, read the log.</figcaption></figure>
+        <figure class="fig"><button type="button" class="plate" data-zoom aria-label="Enlarge: reflectance scatter"><img src="assets/img/isro-scatter.jpg" alt="Scatter of Landsat-8 against Sentinel-2C reflectance" data-slot="assets/img/isro-scatter.jpg"></button><figcaption>Landsat-8 band 7 against Sentinel-2C band 12 reflectance, after alignment.</figcaption></figure>
+        <figure class="fig"><button type="button" class="plate dark" data-zoom aria-label="Enlarge: homogeneity map"><img src="assets/img/isro-homogeneity.jpg" alt="Homogeneity map, white where ground is uniform" data-slot="assets/img/isro-homogeneity.jpg"></button><figcaption>Homogeneity map from an 11 by 11 moving window. White is ground uniform enough to compare radiometry on.</figcaption></figure>
+        <figure class="fig"><button type="button" class="plate dark" data-zoom aria-label="Enlarge: RGB composite"><img src="assets/img/isro-composite.jpg" alt="RGB composite of common and single-image homogeneous ground" data-slot="assets/img/isro-composite.jpg"></button><figcaption>RGB composite: green where both images are homogeneous, red source only, blue target only.</figcaption></figure>
+      </div>
+
+      <p class="limits"><b>What it does not do.</b> It stops at top-of-atmosphere reflectance, with no atmospheric correction. It is built for clear scenes, and ECC expects a starting offset under about 10 pixels.</p>
+      <p class="stack">Python, GDAL, rasterio, OpenCV, NumPy, SciPy, PyQt5</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= projects ================= -->
+<section class="sec" id="projects">
+  <div class="wrap sec-grid">
+    <div class="sec-head"><h2>Projects</h2><p>Four in depth, then the rest.</p></div>
+    <div>
+
+      <article class="case" id="pluto" data-repo="PLUTO">
+        <header class="case-head">
+          <div class="case-row"><h3>PLUTO</h3><span class="case-n">1 of 4</span></div>
+          <p class="one">Catching low-rate DDoS attacks inside a P4 switch.</p>
+        </header>
+        <div class="prose">
+          <p>Low-rate DoS attacks send short, periodic bursts that slip under volume thresholds. PLUTO looks for them where the packets already are, on a P4 (BMv2) switch.</p>
+          <p>A window-based ML stage flags suspect windows, and time-limited per-flow state then filters the attacker. A tree-based ensemble (XGBoost, LightGBM, RandomForest) was trained offline and mapped onto match/action tables with encoded features so it fits the switch's limits. Entropy, variance and wavelet frequency features are computed in the data plane itself.</p>
+        </div>
+        <div class="viz" data-viz="pluto"></div>
+        <dl class="facts">
+          <div><dt>Data plane</dt><dd>Detection and mitigation both run on the switch, with per-flow state that expires.</dd></div>
+          <div><dt>Model</dt><dd>Trained offline, then encoded into match/action tables to respect hardware constraints.</dd></div>
+          <div><dt>Features</dt><dd>Entropy, variance and wavelet-transform frequency features, computed in the P4 pipeline.</dd></div>
+          <div><dt>Evaluation</dt><dd>Simulated in Mininet with iperf traffic, scored by an evaluation script that writes plots and a summary.</dd></div>
+        </dl>
+        <p class="stack">P4, BMv2, Mininet, Python, XGBoost, LightGBM, RandomForest</p>
+        <p class="links"><a class="lnk ext" href="https://github.com/bp2881/PLUTO">Source</a><span class="fog" data-push></span></p>
+      </article>
+
+      <article class="case" id="satharmogan" data-repo="SatHarmoGAN">
+        <header class="case-head">
+          <div class="case-row"><h3>SatHarmoGAN</h3><span class="case-n">2 of 4</span></div>
+          <p class="one">A GAN that predicts what a coarser satellite sensor would have recorded.</p>
+        </header>
+        <div class="prose">
+          <p>Sensors that observe the same ground disagree in resolution, band response and blur. SatHarmoGAN takes a finer-resolution patch and predicts what a coarser sensor would have recorded. It is harmonization, not super-resolution, and it works on top-of-atmosphere reflectance only.</p>
+          <p>The generator is a conditional residual U-Net with FiLM layers and a point spread function module. A multi-scale PatchGAN judges it, but the adversarial weight is kept small so the GAN acts as a regularizer next to reconstruction, spectral angle, SSIM, edge and physics losses.</p>
+        </div>
+        <div class="viz" data-viz="sat"></div>
+        <dl class="facts">
+          <div><dt>Sensors</dt><dd>LISS-4, LISS-3, Sentinel-2 L1C, Landsat 8 and 9. Any pair where the source is finer than the target.</dd></div>
+          <div><dt>Judged against</dt><dd>Nearest, bilinear, bicubic, area, Lanczos and Gaussian baselines and two ablations, on MAE, RMSE, PSNR, SSIM, SAM and ERGAS.</dd></div>
+          <div><dt>Inference</dt><dd>Large scenes are tiled with overlapping Hanning blending, so there are no seams.</dd></div>
+          <div><dt>Reproducible</dt><dd>Each run writes a timestamped folder with its config, environment, checkpoints and metrics.</dd></div>
+        </dl>
+        <p class="stack">PyTorch, NumPy, SciPy, scikit-image, rasterio</p>
+        <p class="links"><a class="lnk ext" href="https://github.com/bp2881/SatHarmoGAN">Source</a><span class="fog" data-push></span></p>
+      </article>
+
+      <article class="case" id="yag" data-repo="yag">
+        <header class="case-head">
+          <div class="case-row"><h3>YAG</h3><span class="case-n">3 of 4</span></div>
+          <p class="one">A Git-style version control system in C++17 that checks its own history.</p>
+        </header>
+        <div class="prose">
+          <p>YAG keeps local history and syncs to a central repository over SSH and SCP, so the server needs nothing installed. It runs on Linux and Windows and produces the same commit IDs on both.</p>
+          <p>It was built to check itself. Every transfer is verified with SHA-256 and retried up to three times, a push is skipped when branch heads already match, and <code class="mono">yag doctor</code> re-walks the history and re-hashes every object.</p>
+        </div>
+        <div class="viz" data-viz="yag"></div>
+        <dl class="facts">
+          <div><dt>Storage</dt><dd>Objects hashed with SHA-256, behind separate storage, index and command layers.</dd></div>
+          <div><dt>Sync</dt><dd>SSH and SCP, lock files against conflicting pushes, and an optional protected main branch.</dd></div>
+          <div><dt>Recovery</dt><dd>reflog brings back earlier HEADs, and gc removes unreachable objects.</dd></div>
+          <div><dt>Recognition</dt><dd><a class="lnk" data-link="csiPost">Best Innovation Project Award</a>, CSI Hyderabad Chapter.</dd></div>
+        </dl>
+        <div class="award">
+          <p><b><a class="lnk" data-link="csiPost">Best Innovation Project Award</a>.</b> Presented by the CSI Hyderabad Chapter for YAG.</p>
+          <figure><button type="button" class="zoomable" data-zoom data-caption="Receiving the Best Innovation Project Award from the CSI Hyderabad Chapter." aria-label="Enlarge award photo"><img src="assets/img/csi-award.jpg" alt="Receiving the Best Innovation Project Award on stage" data-slot="assets/img/csi-award.jpg"></button></figure>
+        </div>
+        <p class="stack">C++17, CMake, OpenSSH</p>
+        <p class="links"><a class="lnk ext" href="https://github.com/bp2881/yag">Source</a><span class="fog" data-push></span></p>
+      </article>
+
+      <article class="case" id="home-stream" data-repo="home-stream">
+        <header class="case-head">
+          <div class="case-row"><h3>home-stream</h3><span class="case-n">4 of 4</span></div>
+          <p class="one">A video server where Python never touches the bytes.</p>
+        </header>
+        <div class="prose">
+          <p>A home video server has to serve big files to a phone or a TV without stalling. home-stream is a Flask app behind Nginx that answers HTTP range requests with 206 Partial Content. Flask only decides who may read which file. It replies with X-Accel-Redirect, and Nginx sends the bytes with kernel sendfile.</p>
+          <p>New files arrive in whatever codec they came in. A background pipeline inspects each one with ffprobe and picks a fast remux when the streams are compatible or a full re-encode when they are not. A lock-guarded queue stops the same file being converted twice, and a polling watcher updates a thread-safe index without a restart.</p>
+        </div>
+        <div class="viz" data-viz="stream"></div>
+        <dl class="facts">
+          <div><dt>Delivery</dt><dd>Range requests, 206 responses, file bytes served by Nginx and never by Python.</dd></div>
+          <div><dt>Transcoding</dt><dd>ffprobe to check codec compatibility, ffmpeg to remux or re-encode on background threads.</dd></div>
+          <div><dt>Concurrency</dt><dd>A lock-guarded work queue and an RLock-guarded in-memory media index.</dd></div>
+          <div><dt>Discovery</dt><dd>A polling file watcher indexes new media automatically.</dd></div>
+        </dl>
+        <p class="stack">Python, Flask, Nginx, ffmpeg</p>
+        <p class="links"><a class="lnk ext" href="https://github.com/bp2881/home-stream">Source</a><span class="fog" data-push></span></p>
+      </article>
+
+      <div class="more">
+        <h3>Also built</h3>
+        <ul class="also">
+          <li data-repo="RemoteSync"><h4>RemoteSync</h4><div><p>Bi-directional file sync for a D-Link router, built by reverse engineering its web interface. Headless Chrome solves the router's HMAC-MD5 login once and hands over a session token. Everything after that is direct HTTP against the undocumented REST API. It is additive only and never deletes a file.</p><p class="m"><a class="lnk ext" href="https://github.com/bp2881/RemoteSync">Source</a> <span class="fog" data-push></span></p></div></li>
+          <li data-repo="for_better_tomorrow"><h4>For Better Tomorrow</h4><div><p>A Flask app that turns weight, height, age and training days into diet and workout plans through Gemini agents built with Google's Agent Development Kit. It adds streaks, reminders and on-page workout timers.</p><p class="m"><a class="lnk ext" href="https://github.com/bp2881/for_better_tomorrow">Source</a> <span class="fog" data-push></span></p></div></li>
+          <li data-repo="VIKSHAN"><h4>VIKSHAN</h4><div><p>Vision-based Image Keypoint Shift and Homogeneity ANalysis, in Python.</p><p class="m"><a class="lnk ext" href="https://github.com/bp2881/VIKSHAN">Source</a> <span class="fog" data-push></span></p></div></li>
+        </ul>
+      </div>
+
+      <div class="more">
+        <h3>Everything else on GitHub</h3>
+        <div class="repos" id="repos"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= contests ================= -->
+<section class="sec" id="contests">
+  <div class="wrap sec-grid">
+    <div class="sec-head"><h2>Contests</h2><p>Competitive programming, live from the contest sites.</p></div>
+    <div>
+      <div class="plats" id="plats"></div>
+      <div class="ledger">
+        <h4>Contests entered</h4>
+        <div id="ledger"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= activity ================= -->
+<section class="sec" id="activity">
+  <div class="wrap sec-grid">
+    <div class="sec-head"><h2>Activity</h2><p id="act-sub">Live from GitHub and the contest sites.</p></div>
+    <div id="activity-mount"></div>
+  </div>
+</section>
+
+<!-- ================= beyond ================= -->
+<section class="sec" id="beyond">
+  <div class="wrap sec-grid">
+    <div class="sec-head"><h2>Beyond code</h2></div>
+    <div>
+      <ul class="rows">
+        <li><h4><a class="lnk" data-link="csiPost">Best Innovation Project Award</a></h4><div><p>CSI Hyderabad Chapter, for YAG.</p></div></li>
+        <li><h4>Founder and President, Nexus Club</h4><div><p>Runs workshops on development and DevOps practice.</p></div></li>
+        <li><h4>Hackathon organizer</h4><div><p>Coordinated HackVibe and VHack 2.0 with more than 500 participants.</p></div></li>
+      </ul>
+      <div class="beyond-two">
+        <div><h4>Education</h4><p>B.Tech in Computer Science, Vignan Institute of Technology and Science, Hyderabad. 2023 to 2027. CGPA 8.5.</p></div>
+        <div><h4>Certifications</h4><ul><li><a class="lnk" data-link="certSupervisedML">Supervised Machine Learning, Stanford and DeepLearning.AI</a></li><li><a class="lnk" data-link="certDAA">Design and Analysis of Algorithms, NPTEL</a></li><li><a class="lnk" data-link="certDSA">Data Structures and Algorithms in Python, NPTEL</a></li></ul></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot" id="contact">
+  <div class="wrap">
+    <h2>Hiring for machine learning or software? Write to me.</h2>
+    <a class="mail" href="mailto:pranavbairy2@gmail.com">pranavbairy2@gmail.com</a>
+    <p class="foot-links">
+      <a class="lnk ext" href="https://github.com/bp2881">GitHub</a>
+      <a class="lnk ext" href="https://linkedin.com/in/pranavbairy">LinkedIn</a>
+      <a class="lnk ext" href="https://leetcode.com/u/pranavbairy2/">LeetCode</a>
+      <a class="lnk ext" href="https://codeforces.com/profile/pranavbairy">Codeforces</a>
+      <a class="lnk ext" href="https://www.codechef.com/users/bp28">CodeChef</a>
+    </p>
+    <small id="stamp"></small>
+  </div>
+</footer>
+
+<div class="tip" id="tip" role="presentation"></div>
+<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="Enlarged figure">
+  <div class="lb-top"><span class="lb-count" aria-live="polite"></span><button type="button" class="lb-x">Close</button></div>
+  <div class="lb-stage"><img alt=""></div>
+  <div class="lb-bottom"><button type="button" class="lb-prev">Previous</button><p class="lb-cap"></p><button type="button" class="lb-next">Next</button></div>
+</div>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/data/snapshot.js"></script>
+<script src="assets/data/manual.js"></script>
+<script src="assets/data/links.js"></script>
+<script src="assets/js/visuals.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>

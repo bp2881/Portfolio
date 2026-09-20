@@ -1,0 +1,29 @@
+# Optional. Refreshes assets/data/snapshot.js once a day from GitHub's servers,
+# which LeetCode and others often accept when they refuse a cloud function.
+# Needs a repository secret GH_TOKEN (classic token, read:user). Add SOLUTION_REPOS
+# as a repository variable if a repo of yours holds one commit per solved problem.
+name: refresh-data
+on:
+  schedule:
+    - cron: "30 20 * * *"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python tools/refresh_data.py
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          SOLUTION_REPOS: ${{ vars.SOLUTION_REPOS }}
+      - name: Commit if changed
+        run: |
+          git config user.name "refresh-data"
+          git config user.email "refresh-data@users.noreply.github.com"
+          git add assets/data/snapshot.js
+          git diff --staged --quiet || git commit -m "Refresh live data" && git push
