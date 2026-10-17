@@ -27,5 +27,3 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# config with real Appwrite IDs (generated at deploy time by tools/build_config.sh)
-assets/js/config.js

@@ -41,7 +41,11 @@
     const btn = form.querySelector("button[type='submit']");
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
-      if (!appwriteReady) { err.textContent = "Appwrite not configured yet."; return; }
+      if (!appwriteReady) {
+        console.error("Login aborted: Appwrite is not configured. window.__CONFIG__ is missing or incomplete.", { CFG, Appwrite: window.Appwrite });
+        err.textContent = "Appwrite not configured (assets/js/config.js missing).";
+        return;
+      }
       err.textContent = "";
       const email = $("#email").value.trim(), pass = $("#pass").value;
       if (!email || !pass) {
