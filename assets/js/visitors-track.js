@@ -54,20 +54,22 @@
     return {};
   }
 
+  const clamp = (val, max = 30) => (val != null && String(val).trim().length ? String(val).trim().slice(0, max) : null);
+
   async function log() {
     console.log("[Visitor Tracking] Gathering visit details...");
     const loc = await geo();
     const doc = {
-      ip: loc.ip || null,
-      city: loc.city || null,
-      region: loc.region || null,
-      country: loc.country || null,
-      country_code: loc.country_code || null,
-      lat: loc.lat != null ? loc.lat : null,
-      lng: loc.lng != null ? loc.lng : null,
-      path: location.pathname || "/",
-      referrer: document.referrer || null,
-      user_agent: navigator.userAgent,
+      ip: clamp(loc.ip, 30),
+      city: clamp(loc.city, 30),
+      region: clamp(loc.region, 30),
+      country: clamp(loc.country, 30),
+      country_code: clamp(loc.country_code, 5),
+      lat: typeof loc.lat === "number" ? loc.lat : null,
+      lng: typeof loc.lng === "number" ? loc.lng : null,
+      path: clamp(location.pathname || "/", 40) || "/",
+      referrer: clamp(document.referrer, 30),
+      user_agent: clamp(navigator.userAgent, 30),
       visited_at: new Date().toISOString(),
     };
 

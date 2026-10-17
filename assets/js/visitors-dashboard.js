@@ -173,7 +173,7 @@
       logTestBtn.textContent = "Logging...";
       try {
         const url = CFG.endpoint.replace(/\/$/, "") + "/databases/" + CFG.databaseId + "/collections/" + CFG.visitsCollectionId + "/documents";
-        await fetch(url, {
+        const res = await fetch(url, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -185,13 +185,17 @@
             data: {
               path: "/visitors",
               visited_at: new Date().toISOString(),
-              user_agent: navigator.userAgent,
-              city: "Dashboard Test",
-              country: "Manual Test",
-              region: "Admin Panel",
+              user_agent: String(navigator.userAgent || "Browser").slice(0, 30),
+              city: "Dash Test",
+              country: "Manual",
+              region: "Admin",
             },
           }),
         });
+        if (!res.ok) {
+          const errText = await res.text();
+          console.error("Test log failed:", res.status, errText);
+        }
         await enter();
       } catch (err) {
         console.error("Test log failed:", err);
