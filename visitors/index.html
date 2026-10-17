@@ -37,7 +37,11 @@
   <div class="wrap">
     <div class="dash-top">
       <h1>Visitors</h1>
-      <button type="button" id="signout">Sign out</button>
+      <div style="display:flex;gap:18px;align-items:baseline">
+        <button type="button" id="refresh">Refresh</button>
+        <button type="button" id="log-test">Log test visit</button>
+        <button type="button" id="signout">Sign out</button>
+      </div>
     </div>
     <div class="dash-stats" id="stats"></div>
     <div class="dash-cols">
@@ -56,7 +60,7 @@
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/appwrite@17.0.0"></script>
-<script src="../assets/js/config.js?v=2"></script>
-<script src="../assets/js/visitors-dashboard.js?v=2"></script>
+<script src="../assets/js/config.js?v=3"></script>
+<script src="../assets/js/visitors-dashboard.js?v=3"></script>
 </body>
 </html>

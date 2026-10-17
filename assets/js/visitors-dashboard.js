@@ -152,6 +152,63 @@
     location.reload();
   });
 
+  const refreshBtn = $("#refresh");
+  if (refreshBtn) {
+    refreshBtn.addEventListener("click", async () => {
+      refreshBtn.disabled = true;
+      refreshBtn.textContent = "Refreshing...";
+      try {
+        await enter();
+      } finally {
+        refreshBtn.disabled = false;
+        refreshBtn.textContent = "Refresh";
+      }
+    });
+  }
+
+  const logTestBtn = $("#log-test");
+  if (logTestBtn) {
+    logTestBtn.addEventListener("click", async () => {
+      logTestBtn.disabled = true;
+      logTestBtn.textContent = "Logging...";
+      try {
+        const url = CFG.endpoint.replace(/\/$/, "") + "/databases/" + CFG.databaseId + "/collections/" + CFG.visitsCollectionId + "/documents";
+        await fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-Appwrite-Project": CFG.projectId,
+            "X-Appwrite-Response-Format": "1.4.0",
+          },
+          body: JSON.stringify({
+            documentId: "unique()",
+            data: {
+              path: "/visitors",
+              visited_at: new Date().toISOString(),
+              user_agent: navigator.userAgent,
+              city: "Dashboard Test",
+              country: "Manual Test",
+              region: "Admin Panel",
+            },
+          }),
+        });
+        await enter();
+      } catch (err) {
+        console.error("Test log failed:", err);
+      } finally {
+        logTestBtn.disabled = false;
+        logTestBtn.textContent = "Log test visit";
+      }
+    });
+  }
+
+  // Poll for new visits every 30s while dashboard is visible
+  setInterval(() => {
+    if ($("#dash").classList.contains("on")) {
+      loadVisits().then(render).catch(() => {});
+    }
+  }, 30000);
+
   initGesture();
   initForm();
 
