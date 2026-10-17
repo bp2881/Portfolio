@@ -37,7 +37,6 @@ Open http://localhost:8000. Add `?slots` to the URL to see a dashed frame wherev
 | `assets/logos/brand.svg` | Header, 30 px square, replaces the "PB" box next to your name |
 | `assets/img/csi-award.jpg` | Projects, YAG, award block |
 | `assets/data/links.js` | One place for every link still to add: the ISRO LinkedIn post, the CSI award post, and the three certificates. Empty ones show as plain text, never as dead links |
-| `assets/logos/favicon.png` | Browser tab icon (64 x 64 or 32 x 32 PNG). Until it exists the tab shows a "PB" monogram |
 | `assets/img/isro-*.jpg` | Four figures from your NRSC report. Confirm NRSC allows them to be public, or delete the ones you do not want and they disappear |
 
 Add `?slots` to the URL to see a dashed frame wherever any image is missing. Missing images hide themselves otherwise.
@@ -102,11 +101,6 @@ To test collectors on your machine: `GH_TOKEN=... python functions/sync/src/loca
 
 Supabase is not used. Nothing here needs a SQL database.
 
-## Tests
+## Visitors
 
-```
-pip install pytest
-pytest functions/sync/tests
-```
-
-The tests cover the calendar parser, the daily-activity parsers, LeetCode failing loudly instead of returning empty data, solution-repo commit counting (against a saved GitHub page), the stale-data merge logic, and the Codeforces and LeetCode transformations with mocked responses. The four live endpoints themselves have not been called from a real Appwrite run yet.
+Private analytics page. See `.visitors` for setup and usage.

@@ -1,0 +1,60 @@
+# Visitors: a private analytics page
+
+`/visitors` logs where visitors come from and shows it to you alone.
+
+## How the lock works
+
+A static site can't hide a password in JavaScript,
+so `/visitors` doesn't try to. It opens to a blank page. Click the small
+circle three times, then the dot in the bottom right corner, within ten
+seconds, and a login form appears. That gesture only hides the form from a
+casual visitor; it is not the security. The real lock is Appwrite: your
+password is checked and hashed on Appwrite's servers, never stored or
+compared in this code, and the "visits" collection's read permission is
+scoped to your account. Someone who logs into a different Appwrite account
+gets an empty result, not your data.
+
+## What gets logged
+
+Once a day per browser (by IST date, so refreshes
+don't flood the log), the main site silently asks a free IP-geolocation API
+for city-level location, then writes one row: IP, city, region, country,
+latitude and longitude, the page path, the referrer, the browser's user
+agent, and a timestamp. No cookie, no visitor identity beyond that.
+
+## Setup, in the Appwrite Console
+
+1. **Auth.** Go to your project's **Auth**, then **Users**, then **Create
+   user**. Give it your own email and a password. This is the one account
+   that can read the log; there is no public sign-up flow anywhere on the
+   site.
+2. **Database.** Go to **Databases**, create a database with ID `portfolio`
+   (or edit `assets/js/config.js` to match a different ID), and inside it a
+   collection with ID `visits`.
+3. **Attributes.** In that collection add these string/float attributes,
+   all optional except `path`: `ip`, `city`, `region`, `country`,
+   `country_code`, `lat` (float), `lng` (float), `path` (string, required),
+   `referrer`, `user_agent`, `visited_at` (string, ISO datetime).
+4. **Permissions.** On the collection's **Settings**, then **Permissions**:
+   - **Create**: role **Any**. This lets every visitor's browser write a log
+     row without signing in.
+   - **Read**: **User**, then paste your specific user ID from step 1 (open
+     the user in **Auth** to copy it). Not "any", not "any logged-in user":
+     that one ID only.
+   - Leave **Update** and **Delete** with no one, or add yourself if you
+     want to prune old rows from the console.
+5. **Platform.** Under your project's **Overview**, **Add platform**, add a
+   **Web** platform with your hostname (`pranavbairy.me`, and
+   `www.pranavbairy.me`, and `localhost` while testing).
+6. **Config.** Fill in `assets/js/config.js`: `endpoint` and `projectId` as
+   usual, plus `databaseId` and `visitsCollectionId` if you changed the IDs
+   above.
+7. **Push it.** Once `config.js` has real values, both the silent logger and
+   `/visitors` come alive on the next deploy.
+
+## Changing the gesture or the limits
+
+The click sequence lives near the top of `assets/js/visitors-dashboard.js`
+(`initGesture`), and the "once per IST day" and "200 most recent rows"
+limits are one line each in `visitors-track.js` and
+`visitors-dashboard.js`. Both are plain to edit.

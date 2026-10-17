@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pranav Bairy</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:,">
+<link rel="preload" href="../assets/fonts/schibsted-grotesk-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/css/styles.css">
+<link rel="stylesheet" href="../assets/css/visitors.css">
+</head>
+<body class="gate">
+<div class="gate-blank">
+  <button type="button" class="gate-mark" id="mark" aria-label=""></button>
+</div>
+<button type="button" class="gate-dot" id="dot" aria-label=""></button>
+
+<div class="lock" id="lock" hidden>
+  <h1>Pranav Bairy</h1>
+  <p>Sign in to view.</p>
+  <form id="form" autocomplete="off">
+    <div>
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required autocomplete="username">
+    </div>
+    <div>
+      <label for="pass">Password</label>
+      <input type="password" id="pass" name="pass" required autocomplete="current-password">
+    </div>
+    <p class="err" id="err" role="alert"></p>
+    <button type="submit">Unlock</button>
+  </form>
+</div>
+
+<main class="dash" id="dash">
+  <div class="wrap">
+    <div class="dash-top">
+      <h1>Visitors</h1>
+      <button type="button" id="signout">Sign out</button>
+    </div>
+    <div class="dash-stats" id="stats"></div>
+    <div class="dash-cols">
+      <div>
+        <h2>Recent visits, IST</h2>
+        <div id="recent"></div>
+      </div>
+      <div>
+        <h2>Top countries</h2>
+        <ul class="top-list" id="countries"></ul>
+        <h2 style="margin-top:26px">Top pages</h2>
+        <ul class="top-list" id="pages"></ul>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/appwrite@17.0.0"></script>
+<script src="../assets/js/config.js"></script>
+<script src="../assets/js/visitors-dashboard.js"></script>
+</body>
+</html>

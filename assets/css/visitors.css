@@ -1,0 +1,49 @@
+/* /visitors page. Reuses the main site's design tokens (styles.css loads first). */
+body.gate{min-height:100vh;display:flex;flex-direction:column}
+.gate-blank{flex:1;display:flex;align-items:center;justify-content:center}
+.gate-mark{width:34px;height:34px;border-radius:50%;background:var(--deck);cursor:default;user-select:none;-webkit-tap-highlight-color:transparent}
+.gate-dot{position:fixed;right:18px;bottom:14px;width:10px;height:10px;border-radius:50%;background:var(--night);cursor:default;user-select:none;-webkit-tap-highlight-color:transparent}
+.gate-dot:hover{background:var(--rule)}
+
+.lock{width:min(360px,88vw);margin:0 auto;text-align:center}
+.lock[hidden]{display:none}
+.lock h1{font-size:1.1rem;font-weight:600;margin-bottom:6px}
+.lock p{color:var(--fog);font-size:.9rem;margin-bottom:22px}
+.lock form{display:grid;gap:10px;text-align:left}
+.lock label{font-size:.8rem;color:var(--fog)}
+.lock input{width:100%;margin-top:4px;padding:9px 10px;background:var(--deck);border:1px solid var(--rule2);border-radius:4px;color:var(--paper);font:inherit;font-size:.92rem}
+.lock input:focus{outline:2px solid var(--saffron);outline-offset:1px}
+.lock button{margin-top:6px;width:100%;padding:10px;background:var(--saffron);color:var(--night);border-radius:4px;font-weight:600;font-size:.9rem;cursor:pointer;text-align:center}
+.lock button:hover{opacity:.92}
+.lock .err{min-height:1.2em;font-size:.82rem;color:var(--saffron)}
+
+/* dashboard */
+.dash{display:none}
+.dash.on{display:block}
+.dash .wrap{padding:40px var(--gut) 80px}
+.dash-top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:10px 24px;margin-bottom:28px}
+.dash-top h1{font-size:1.4rem;font-weight:600;letter-spacing:-.02em}
+.dash-top button{color:var(--fog);font-size:.85rem;border-bottom:1px solid var(--rule2);padding:2px 0}
+.dash-top button:hover{color:var(--saffron);border-color:var(--saffron)}
+.dash-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);margin-bottom:32px}
+.dash-stat{padding:18px 18px 20px 0}
+.dash-stat+.dash-stat{padding-left:18px;border-left:1px solid var(--rule)}
+.dash-stat b{display:block;font-size:1.7rem;font-weight:600;letter-spacing:-.02em}
+.dash-stat span{display:block;margin-top:4px;font-size:.85rem;color:var(--fog)}
+.dash-cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,0.5fr);gap:36px}
+.dash h2{font-size:.95rem;font-weight:600;margin-bottom:10px}
+.dtable{width:100%;border-collapse:collapse;font-size:.87rem}
+.dtable th{text-align:left;font-weight:400;color:var(--fog);font-size:.78rem;padding:8px 12px 8px 0;border-bottom:1px solid var(--rule2)}
+.dtable td{padding:9px 12px 9px 0;border-bottom:1px solid var(--rule);vertical-align:top}
+.dtable tr:hover td{background:var(--deck)}
+.top-list li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid var(--rule);font-size:.88rem}
+.top-list span:last-child{color:var(--fog);font-variant-numeric:tabular-nums}
+.dash-empty{color:var(--fog);font-size:.9rem;padding:30px 0}
+
+@media (max-width:820px){
+  .dash-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .dash-stat:nth-child(3){padding-left:0;border-left:0}
+  .dash-stat:nth-child(n+3){border-top:1px solid var(--rule)}
+  .dash-cols{grid-template-columns:minmax(0,1fr)}
+  .dtable{display:block;overflow-x:auto}
+}
