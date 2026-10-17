@@ -38,16 +38,37 @@
   /* ---------- login ---------- */
   function initForm() {
     const form = $("#form"), err = $("#err");
+    const btn = form.querySelector("button[type='submit']");
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       if (!appwriteReady) { err.textContent = "Appwrite not configured yet."; return; }
       err.textContent = "";
       const email = $("#email").value.trim(), pass = $("#pass").value;
+      if (!email || !pass) {
+        err.textContent = "Please enter email and password.";
+        return;
+      }
+      btn.disabled = true;
+      btn.textContent = "Unlocking...";
       try {
+        // Clear any existing session to prevent 409 session conflict
+        await account.deleteSession("current").catch(() => {});
         await account.createEmailPasswordSession(email, pass);
         await enter();
       } catch (ex) {
-        err.textContent = "Incorrect email or password.";
+        console.error("Login error:", ex);
+        let msg = "Incorrect email or password.";
+        if (ex && ex.message) {
+          if (ex.message.includes("Failed to fetch") || ex.message.includes("NetworkError")) {
+            msg = "Network or CORS error. Add localhost/domain to Web platforms in Appwrite.";
+          } else {
+            msg = ex.message;
+          }
+        }
+        err.textContent = msg;
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Unlock";
       }
     });
   }
@@ -63,12 +84,21 @@
   }
 
   async function loadVisits() {
-    // Newest first, most recent 200. Raise the limit later if you want more history in view.
-    const res = await databases.listDocuments(CFG.databaseId, CFG.visitsCollectionId, [
-      Query.orderDesc("visited_at"),
-      Query.limit(200),
-    ]);
-    return res.documents;
+    // Newest first, up to 200. Fall back to in-memory sort if custom index on visited_at is missing.
+    try {
+      const res = await databases.listDocuments(CFG.databaseId, CFG.visitsCollectionId, [
+        Query.orderDesc("visited_at"),
+        Query.limit(200),
+      ]);
+      return res.documents;
+    } catch (err) {
+      console.warn("Index on visited_at may be missing, falling back to default listDocuments:", err);
+      const res = await databases.listDocuments(CFG.databaseId, CFG.visitsCollectionId, [
+        Query.limit(200),
+      ]);
+      const docs = res.documents || [];
+      return docs.sort((a, b) => new Date(b.visited_at || b.$createdAt || 0) - new Date(a.visited_at || a.$createdAt || 0));
+    }
   }
 
   function render(rows) {
@@ -86,7 +116,7 @@
 
     $("#recent").innerHTML = rows.length ? `<table class="dtable"><thead><tr><th>When</th><th>Location</th><th>Page</th></tr></thead><tbody>${rows.slice(0, 40).map((r) => {
       const loc = [r.city, r.region, r.country].filter(Boolean).join(", ") || (r.ip ? "Unknown location" : "No location");
-      return `<tr><td>${esc(fmtIST(r.visited_at))}</td><td>${esc(loc)}</td><td>${esc(r.path || "/")}</td></tr>`;
+      return `<tr><td>${esc(fmtIST(r.visited_at || r.$createdAt))}</td><td>${esc(loc)}</td><td>${esc(r.path || "/")}</td></tr>`;
     }).join("")
       }</tbody></table>` : '<p class="dash-empty">No visits logged yet.</p>';
 
@@ -97,16 +127,18 @@
   async function enter() {
     try {
       const rows = await loadVisits();
+      $(".gate-blank")?.remove();
+      $("#dot")?.remove();
       $("#lock").hidden = true;
       $("#dash").classList.add("on");
       render(rows);
     } catch (ex) {
-      // Logged in, but not authorized to read: the permission scoping did its job.
+      console.error("Dashboard authorization/load error:", ex);
       $(".gate-blank")?.remove();
       $("#dot")?.remove();
       $("#lock").hidden = false;
-      $("#err").textContent = "That account can't view this.";
-      await account.deleteSession("current").catch(() => { });
+      const msg = ex && ex.message ? ex.message : "That account can't view this.";
+      $("#err").textContent = msg;
     }
   }
 

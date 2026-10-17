@@ -7,6 +7,13 @@ set -e
 DIR="$(cd "$(dirname "$0")/.." && pwd)"
 OUT="$DIR/assets/js/config.js"
 
+if [ -f "$DIR/.env" ]; then
+  set -a
+  # shellcheck disable=SC1091
+  . "$DIR/.env"
+  set +a
+fi
+
 cat > "$OUT" <<EOF
 window.__CONFIG__ = {
   endpoint: "${APPWRITE_ENDPOINT:-}",

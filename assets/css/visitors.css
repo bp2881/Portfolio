@@ -13,8 +13,9 @@ body.gate{min-height:100vh;display:flex;flex-direction:column}
 .lock label{font-size:.8rem;color:var(--fog)}
 .lock input{width:100%;margin-top:4px;padding:9px 10px;background:var(--deck);border:1px solid var(--rule2);border-radius:4px;color:var(--paper);font:inherit;font-size:.92rem}
 .lock input:focus{outline:2px solid var(--saffron);outline-offset:1px}
-.lock button{margin-top:6px;width:100%;padding:10px;background:var(--saffron);color:var(--night);border-radius:4px;font-weight:600;font-size:.9rem;cursor:pointer;text-align:center}
+.lock button{margin-top:6px;width:100%;padding:10px;background:var(--saffron);color:var(--night);border-radius:4px;font-weight:600;font-size:.9rem;cursor:pointer;text-align:center;border:0}
 .lock button:hover{opacity:.92}
+.lock button:disabled{opacity:.6;cursor:not-allowed}
 .lock .err{min-height:1.2em;font-size:.82rem;color:var(--saffron)}
 
 /* dashboard */
